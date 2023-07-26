@@ -1,4 +1,4 @@
-# dotnet-optionspattern
+# ASP.NET Core - Options configuration
 
 ## 1. Introduction
 
