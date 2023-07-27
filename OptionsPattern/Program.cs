@@ -11,6 +11,18 @@ builder.Services.AddSwaggerGen();
                                                                                                                                                                 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameof(EmailSettings)));
 
+builder.Services.AddCors(options =>
+{
+    string[] allowedOrigins = builder.Configuration.GetSection("CorsPolicyAllowedOrigins").Get<string[]>()!;
+    options.AddPolicy("CorsPolicyName", options =>
+    {
+        options
+        .WithOrigins(allowedOrigins)
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CorsPolicyName");
 
 app.UseHttpsRedirection();
 
